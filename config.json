@@ -1,0 +1,536 @@
+{
+    "contents": [
+        {
+            "name": "Temperature_001",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #001"
+        },
+        {
+            "name": "Pressure_002",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #002"
+        },
+        {
+            "name": "Humidity_003",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #003"
+        },
+        {
+            "name": "Voltage_004",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #004"
+        },
+        {
+            "name": "Current_005",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #005"
+        },
+        {
+            "name": "Distance_006",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #006"
+        },
+        {
+            "name": "Angle_007",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #007"
+        },
+        {
+            "name": "Speed_008",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #008"
+        },
+        {
+            "name": "Time_009",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #009"
+        },
+        {
+            "name": "Power_010",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #010"
+        },
+        {
+            "name": "Temperature_011",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #011"
+        },
+        {
+            "name": "Pressure_012",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #012"
+        },
+        {
+            "name": "Humidity_013",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #013"
+        },
+        {
+            "name": "Voltage_014",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #014"
+        },
+        {
+            "name": "Current_015",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #015"
+        },
+        {
+            "name": "Distance_016",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #016"
+        },
+        {
+            "name": "Angle_017",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #017"
+        },
+        {
+            "name": "Speed_018",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #018"
+        },
+        {
+            "name": "Time_019",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #019"
+        },
+        {
+            "name": "Power_020",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #020"
+        },
+        {
+            "name": "Temperature_021",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #021"
+        },
+        {
+            "name": "Pressure_022",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #022"
+        },
+        {
+            "name": "Humidity_023",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #023"
+        },
+        {
+            "name": "Voltage_024",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #024"
+        },
+        {
+            "name": "Current_025",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #025"
+        },
+        {
+            "name": "Distance_026",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #026"
+        },
+        {
+            "name": "Angle_027",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #027"
+        },
+        {
+            "name": "Speed_028",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #028"
+        },
+        {
+            "name": "Time_029",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #029"
+        },
+        {
+            "name": "Power_030",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #030"
+        },
+        {
+            "name": "Temperature_031",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #031"
+        },
+        {
+            "name": "Pressure_032",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #032"
+        },
+        {
+            "name": "Humidity_033",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #033"
+        },
+        {
+            "name": "Voltage_034",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #034"
+        },
+        {
+            "name": "Current_035",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #035"
+        },
+        {
+            "name": "Distance_036",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #036"
+        },
+        {
+            "name": "Angle_037",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #037"
+        },
+        {
+            "name": "Speed_038",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #038"
+        },
+        {
+            "name": "Time_039",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #039"
+        },
+        {
+            "name": "Power_040",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #040"
+        },
+        {
+            "name": "Temperature_041",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #041"
+        },
+        {
+            "name": "Pressure_042",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #042"
+        },
+        {
+            "name": "Humidity_043",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #043"
+        },
+        {
+            "name": "Voltage_044",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #044"
+        },
+        {
+            "name": "Current_045",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #045"
+        },
+        {
+            "name": "Distance_046",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #046"
+        },
+        {
+            "name": "Angle_047",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #047"
+        },
+        {
+            "name": "Speed_048",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #048"
+        },
+        {
+            "name": "Time_049",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #049"
+        },
+        {
+            "name": "Power_050",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #050"
+        },
+        {
+            "name": "Temperature_051",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #051"
+        },
+        {
+            "name": "Pressure_052",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #052"
+        },
+        {
+            "name": "Humidity_053",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #053"
+        },
+        {
+            "name": "Voltage_054",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #054"
+        },
+        {
+            "name": "Current_055",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #055"
+        },
+        {
+            "name": "Distance_056",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #056"
+        },
+        {
+            "name": "Angle_057",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #057"
+        },
+        {
+            "name": "Speed_058",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #058"
+        },
+        {
+            "name": "Time_059",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #059"
+        },
+        {
+            "name": "Power_060",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #060"
+        },
+        {
+            "name": "Temperature_061",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #061"
+        },
+        {
+            "name": "Pressure_062",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #062"
+        },
+        {
+            "name": "Humidity_063",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #063"
+        },
+        {
+            "name": "Voltage_064",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #064"
+        },
+        {
+            "name": "Current_065",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #065"
+        },
+        {
+            "name": "Distance_066",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #066"
+        },
+        {
+            "name": "Angle_067",
+            "unit": "deg",
+            "upper": 180,
+            "lower": -180,
+            "help": "Angular position setting #067"
+        },
+        {
+            "name": "Speed_068",
+            "unit": "rpm",
+            "upper": 3000,
+            "lower": 0,
+            "help": "Motor speed configuration #068"
+        },
+        {
+            "name": "Time_069",
+            "unit": "ms",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Time delay setting #069"
+        },
+        {
+            "name": "Power_070",
+            "unit": "W",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Power consumption setting #070"
+        },
+        {
+            "name": "Temperature_071",
+            "unit": "°C",
+            "upper": 100,
+            "lower": -50,
+            "help": "Temperature sensor configuration #071"
+        },
+        {
+            "name": "Pressure_072",
+            "unit": "hPa",
+            "upper": 1200,
+            "lower": 800,
+            "help": "Atmospheric pressure setting #072"
+        },
+        {
+            "name": "Humidity_073",
+            "unit": "%",
+            "upper": 100,
+            "lower": 0,
+            "help": "Relative humidity setting #073"
+        },
+        {
+            "name": "Voltage_074",
+            "unit": "V",
+            "upper": 24,
+            "lower": 0,
+            "help": "System voltage configuration #074"
+        },
+        {
+            "name": "Current_075",
+            "unit": "mA",
+            "upper": 1000,
+            "lower": 0,
+            "help": "Current measurement setting #075"
+        },
+        {
+            "name": "Distance_076",
+            "unit": "mm",
+            "upper": 5000,
+            "lower": 0,
+            "help": "Distance sensor configuration #076"
+        }
+    ]
+}
