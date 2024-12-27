@@ -1,188 +1,162 @@
 import streamlit as st
 import json
-from pathlib import Path
-from pprint import pprint
+import os
 
 
-def load_json(file):
+def load_json_config(file_path):
+    """JSON 설정 파일을 로드하는 함수"""
     try:
-        contents = file.gevalue().decode("utf-8")
-        return jsong.load(contents)
-    except:
-        st.errror(f"error loading json file: {str(e)}")
+        with open(file_path, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        st.error(f"설정 파일을 찾을 수 없습니다: {file_path}")
+        return None
+    except json.JSONDecodeError:
+        st.error(f"잘못된 JSON 형식입니다: {file_path}")
         return None
 
 
-def load_local_json(file_path):
-    try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        st.error(f"Error loading JSON file: {str(e)}")
-        return None
+def get_filtered_items(data, search_term):
+    """검색어에 맞는 아이템들을 찾는 함수"""
+    filtered_items = []
+    for main_category, categories in data.items():
+        for category, items in categories.items():
+            for item_name, item_data in items.items():
+                if search_term.lower() in item_name.lower():
+                    filtered_items.append(
+                        {
+                            "main_category": main_category,
+                            "category": category,
+                            "item_name": item_name,
+                            "item_data": item_data,
+                        }
+                    )
+    return filtered_items
 
 
-def get_cur_conf():
-    output_settings = {"contents": []}
-    for item in config["contents"]:
-        key = f"input_{item['name']}"
-        if key in st.session_state:
-            output_settings["contents"].append(
-                {
-                    "name": item["name"],
-                    "unit": item["unit"],
-                    "value": st.session_state[key],
-                    "upper": item["upper"],
-                    "lower": item["lower"],
-                    "help": item["help"],
-                }
+def get_item_value(item_name):
+    """아이템의 현재 값을 가져오는 함수"""
+    return st.session_state.get(f"value_{item_name}", 0.0)
+
+
+def update_value(item_name, value):
+    """아이템의 값을 업데이트하는 함수"""
+    st.session_state[f"value_{item_name}"] = value
+
+
+def get_all_changed_values():
+    """변경된 모든 값을 가져오는 함수"""
+    changed_values = {}
+    for key in st.session_state:
+        if key.startswith("value_"):
+            item_name = key.replace("value_", "")
+            changed_values[item_name] = st.session_state[key]
+    return changed_values
+
+
+def render_item_row(name, data, key_prefix):
+    """아이템 한 줄을 렌더링하는 함수"""
+    cols = st.columns([1, 1])
+    with cols[0]:
+        st.markdown(f"**{name}**")
+    with cols[1]:
+        value = st.number_input(
+            "",
+            min_value=float(data["lower"]),
+            max_value=float(data["upper"]),
+            value=float(data["value"]),
+            step=float(data["unit"]),
+            key=f"{key_prefix}_{name}",
+        )
+        update_value(name, value)
+
+
+def main():
+    st.title("Configuration Interface")
+
+    # 메인 화면에 변경된 값 표시
+    changed_values = get_all_changed_values()
+    if changed_values:
+        st.markdown("### Changed Values")
+        for item_name, value in changed_values.items():
+            st.write(f"**{item_name}**: {value}")
+
+    # 사이드바 구성
+    with st.sidebar:
+        # 파일 업로더
+        uploaded_file = st.file_uploader("Upload JSON Config", type=["json"])
+
+        # 데이터 로드
+        if uploaded_file is not None:
+            try:
+                data = json.load(uploaded_file)
+            except Exception as e:
+                st.error(f"JSON 파일 로드 중 오류 발생: {str(e)}")
+                return
+        else:
+            default_config_path = "config.json"
+            if os.path.exists(default_config_path):
+                data = load_json_config(default_config_path)
+            else:
+                st.error("설정 파일을 업로드하거나 기본 설정 파일을 제공해주세요.")
+                return
+
+        if data is None:
+            return
+
+        # 검색 기능
+        search_term = st.text_input("Search items:", "")
+
+        if search_term:
+            # 검색어가 있는 경우 검색 결과 표시
+            filtered_items = get_filtered_items(data, search_term)
+            if filtered_items:
+                st.write(f"Found {len(filtered_items)} items:")
+                # 검색 결과를 리스트로 표시
+                for item in filtered_items:
+                    st.markdown(f"**{item['item_name']}**")
+                    st.markdown(f"Category: {item['category']}")
+                    col1, col2 = st.columns([3, 1])
+                    with col1:
+                        value = st.number_input(
+                            "Value",
+                            min_value=item["item_data"]["lower"],
+                            max_value=item["item_data"]["upper"],
+                            value=0,
+                            step=item["item_data"]["unit"],
+                            help=item["item_data"]["help"],
+                            key=f"search_{item['item_name']}",
+                        )
+                    with col2:
+                        st.text(f"Unit: {item['item_data']['unit']}")
+                    st.markdown("---")
+            else:
+                st.write("No items found.")
+        else:
+            # 메인 카테고리 선택 콤보박스
+
+            selected_main = st.radio("Select Main Category:", options=list(data.keys()))
+
+            # 선택된 메인 카테고리의 내용 표시
+            if selected_main:
+                selected_data = data[selected_main]
+
+                for category, items in selected_data.items():
+                    with st.expander(f"{category}", True):
+                        # 아이템 표시
+                        for item_name, item_data in items.items():
+                            render_item_row(item_name, item_data, category)
+
+        # 설정 다운로드 버튼
+        if st.button("Download Current Config"):
+            json_str = json.dumps(data, indent=4)
+            st.download_button(
+                label="Download JSON",
+                file_name="config.json",
+                mime="application/json",
+                data=json_str,
             )
 
-    pprint(output_settings)
 
-
-# 페이지 설정
-st.set_page_config(layout="wide", initial_sidebar_state="expanded")
-
-# CSS로 사이드바를 오른쪽으로 이동
-st.markdown(
-    """
-    <style>
-        [data-testid="stSidebar"][aria-expanded="true"]{
-            margin-left: 0;
-            margin-right: 0;
-            left: unset;
-            right: 0;
-        }
-        [data-testid="stSidebar"][aria-expanded="false"]{
-            margin-left: 0;
-            margin-right: 0;
-            left: unset;
-            right: -100%;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-st.title("Config Viewer")
-
-# config_file = st.file_uploader("Upload JSON file", type=["json"])
-# if config_file is not None:
-#     config = load_json(config_file)
-# else:
-#     st.info("Please upload a JSON file")
-#     st.stop()
-
-config = load_local_json("config.json")
-
-if config:
-    with st.sidebar:
-        st.header("Parameter Settings")
-
-        # 검색 필터
-        search_term = st.text_input("Search parameters", "")
-
-        # 카테고리 필터 (Temperature, Pressure 등)
-        categories = sorted(list(set([item["name"] for item in config["contents"]])))
-        selected_category = st.selectbox("Filter by category", ["All"] + categories)
-
-        # 필터링된 항목 표시
-        filtered_items = config["contents"]
-        if search_term:
-            filtered_items = [
-                item
-                for item in filtered_items
-                if search_term.lower() in item["name"].lower()
-            ]
-        if selected_category != "All":
-            filtered_items = [
-                item
-                for item in filtered_items
-                if item["name"].startswith(selected_category)
-            ]
-
-        # 파라미터 표시
-        st.subheader("Parameters")
-        for item in filtered_items:
-            with st.expander(f"{item['name']} ({item['unit']})"):
-                value = st.number_input(
-                    "Value",
-                    min_value=float(item["lower"]),
-                    max_value=float(item["upper"]),
-                    value=float(item["lower"]),
-                    key=f"input_{item['name']}",
-                )
-                st.info(item["help"])
-                st.text(f"Range: {item['lower']} to {item['upper']} {item['unit']}")
-
-    #################################
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.subheader("Current Settings")
-        current_settings = {
-            name: st.session_state[f"input_{name}"]
-            for item in config["contents"]
-            if f"input_{item['name']}" in st.session_state and (name := item["name"])
-        }
-        st.json(current_settings)
-
-    with col2:
-        st.subheader("Selected Category Info")
-        if selected_category != "All":
-            category_items = [
-                item
-                for item in config["contents"]
-                if item["name"].startswith(selected_category)
-            ]
-            st.write(f"Total items in {selected_category}: {len(category_items)}")
-
-            # 카테고리 통계
-            if category_items:
-                avg_upper = sum(item["upper"] for item in category_items) / len(
-                    category_items
-                )
-                avg_lower = sum(item["lower"] for item in category_items) / len(
-                    category_items
-                )
-                st.write(f"Average range: {avg_lower:.2f} to {avg_upper:.2f}")
-    ############################
-    if st.sidebar.button("Save Settings", type="primary"):
-        get_cur_conf()
-        # try:
-        #     # 현재 모든 설정값 수집
-        #     output_settings = {"contents": []}
-        #     for item in config["contents"]:
-        #         key = f"input_{item['name']}"
-        #         if key in st.session_state:
-        #             output_settings["contents"].append(
-        #                 {
-        #                     "name": item["name"],
-        #                     "unit": item["unit"],
-        #                     "value": st.session_state[key],
-        #                     "upper": item["upper"],
-        #                     "lower": item["lower"],
-        #                     "help": item["help"],
-        #                 }
-        #             )
-
-        #     # JSON 파일로 저장
-        #     output_file = "saved_config.json"
-        #     with open(output_file, "w", encoding="utf-8") as f:
-        #         json.dump(output_settings, f, indent=2)
-
-        #     # 다운로드 버튼 생성
-        #     with open(output_file, "r", encoding="utf-8") as f:
-        #         st.sidebar.download_button(
-        #             label="Download Config",
-        #             data=f.read(),
-        #             file_name="saved_config.json",
-        #             mime="application/json",
-        #         )
-
-        #     st.sidebar.success("Settings saved successfully!")
-
-        # except Exception as e:
-        #     st.sidebar.error(f"Error saving settings: {str(e)}")
+if __name__ == "__main__":
+    main()
