@@ -22,13 +22,13 @@ class Config:
     def get_expr_value(cls, expr):
         # todo: hardcoding
         print(f"expppr {expr}")
-        parts = re.split("([\(\)+\-*/%])", expr)
-        # print(f"parts {parts}")
+        parts = re.split("([\(\)+\-*/%,])", expr)
+        print(f"parts {parts}")
         result = []
         for part in parts:
             part = part.strip()
             if "##" in part:
-                # print(f"part {part}")
+                print(f"part {part}")
                 main_cat, sub_cat, item = part.split("##")
 
                 try:
@@ -132,13 +132,15 @@ def render_item_row(name, data, category):
         else:
             item_value = Config.get_expr_value(data['expr']).replace(" ", "")
             print(f"item_value {item_value}")
-            item_value = ne.evaluate(item_value)
+            # ne.evalute: max(4,4*2/4) is not working
+            # item_value = ne.evaluate(item_value)
+            # eval: not prepared for securty
+            item_value = eval(item_value)
             value = st.number_input(
                 "",
                 # min_value=float(data["lower"]),
                 # max_value=float(data["upper"]),
                 value=float(item_value),
-                step=float(data["unit"]),
                 disabled=True,
                 key=key_prefix,
                 on_change=lambda: input_on_change(key_prefix, st.session_state[key_prefix])
