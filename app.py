@@ -23,12 +23,12 @@ class Config:
         # todo: hardcoding
         print(f"expppr {expr}")
         parts = re.split("([\(\)+\-*/%])", expr)
-        print(f"parts {parts}")
+        # print(f"parts {parts}")
         result = []
         for part in parts:
             part = part.strip()
             if "##" in part:
-                print(f"part {part}")
+                # print(f"part {part}")
                 main_cat, sub_cat, item = part.split("##")
 
                 try:
@@ -43,8 +43,16 @@ class Config:
             else:
                 result.append(part)
         
-        print(f"result {result}")
+        # print(f"result {result}")
         return " ".join(result)
+
+    @classmethod
+    def update_value(cls, key_prefix, new_val):
+        print("update_value")
+        main_cat, sub_cat, item = re.split("##", key_prefix)
+        cls._data[main_cat][sub_cat][item]['value'] = new_val
+        print(f"key_prefix {key_prefix}, new val: {new_val}")
+        print(f"data[{main_cat}][{sub_cat}][{item}]")
 
 def load_json_config(file_path):
     """JSON 설정 파일을 로드하는 함수"""
@@ -96,8 +104,17 @@ def get_all_changed_values():
             changed_values[item_name] = st.session_state[key]
     return changed_values
 
+def input_on_change(key_prefix, new_val):
+    print(f"category {key_prefix}")
+    print(f"new val {new_val}")
+    Config.update_value(key_prefix, new_val)
 
-def render_item_row(name, data, key_prefix):
+
+def render_item_row(name, data, category):
+    category.append(name)
+    key_prefix = "##".join(category)
+    category.pop()
+
     cols = st.columns([1, 1])
     with cols[0]:
         st.markdown(f"**{name}**")
@@ -109,7 +126,8 @@ def render_item_row(name, data, key_prefix):
                 max_value=float(data["upper"]),
                 value=float(data["value"]),
                 step=float(data["unit"]),
-                key=f"{key_prefix}_{name}",
+                key=key_prefix,
+                on_change=lambda: input_on_change(key_prefix, st.session_state[key_prefix])
             )
         else:
             item_value = Config.get_expr_value(data['expr']).replace(" ", "")
@@ -121,7 +139,9 @@ def render_item_row(name, data, key_prefix):
                 # max_value=float(data["upper"]),
                 value=float(item_value),
                 step=float(data["unit"]),
-                key=f"{key_prefix}_{name}",
+                disabled=True,
+                key=key_prefix,
+                on_change=lambda: input_on_change(key_prefix, st.session_state[key_prefix])
             )
 
         update_value(name, value)
