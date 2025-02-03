@@ -1,12 +1,55 @@
 import streamlit as st
 import json
 import os
+import re
+from copy import deepcopy
+import numexpr as ne
 
+
+## use singletone to save data
+class Config:
+    _instance = None
+    _data = None
+
+    @classmethod
+    def get_instance(cls, initial_data=None):
+        if cls._instance is None:
+            cls._instance = cls()
+            cls._data = deepcopy(initial_data) if initial_data else None
+        return cls._instance
+
+    @classmethod
+    def get_expr_value(cls, expr):
+        # todo: hardcoding
+        print(f"expppr {expr}")
+        parts = re.split("([\(\)+\-*/%])", expr)
+        print(f"parts {parts}")
+        result = []
+        for part in parts:
+            part = part.strip()
+            if "##" in part:
+                print(f"part {part}")
+                main_cat, sub_cat, item = part.split("##")
+
+                try:
+                    if "value" in cls._data[main_cat][sub_cat][item]:
+                        value = cls._data[main_cat][sub_cat][item]["value"]
+                    else:
+                        print(f"not value  {cls._data[main_cat][sub_cat][item]["expr"]}")
+                        value = cls.get_expr_value(cls._data[main_cat][sub_cat][item]["expr"])
+                    result.append(str(value))
+                except:
+                    result.append(part)
+            else:
+                result.append(part)
+        
+        print(f"result {result}")
+        return " ".join(result)
 
 def load_json_config(file_path):
     """JSON 설정 파일을 로드하는 함수"""
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="utf_8") as file:
             return json.load(file)
     except FileNotFoundError:
         st.error(f"설정 파일을 찾을 수 없습니다: {file_path}")
@@ -55,19 +98,32 @@ def get_all_changed_values():
 
 
 def render_item_row(name, data, key_prefix):
-    """아이템 한 줄을 렌더링하는 함수"""
     cols = st.columns([1, 1])
     with cols[0]:
         st.markdown(f"**{name}**")
     with cols[1]:
-        value = st.number_input(
-            "",
-            min_value=float(data["lower"]),
-            max_value=float(data["upper"]),
-            value=float(data["value"]),
-            step=float(data["unit"]),
-            key=f"{key_prefix}_{name}",
-        )
+        if "value" in data:
+            value = st.number_input(
+                "",
+                min_value=float(data["lower"]),
+                max_value=float(data["upper"]),
+                value=float(data["value"]),
+                step=float(data["unit"]),
+                key=f"{key_prefix}_{name}",
+            )
+        else:
+            item_value = Config.get_expr_value(data['expr']).replace(" ", "")
+            print(f"item_value {item_value}")
+            item_value = ne.evaluate(item_value)
+            value = st.number_input(
+                "",
+                # min_value=float(data["lower"]),
+                # max_value=float(data["upper"]),
+                value=float(item_value),
+                step=float(data["unit"]),
+                key=f"{key_prefix}_{name}",
+            )
+
         update_value(name, value)
 
 
@@ -103,49 +159,25 @@ def main():
 
         if data is None:
             return
-
-        # 검색 기능
-        search_term = st.text_input("Search items:", "")
-
-        if search_term:
-            # 검색어가 있는 경우 검색 결과 표시
-            filtered_items = get_filtered_items(data, search_term)
-            if filtered_items:
-                st.write(f"Found {len(filtered_items)} items:")
-                # 검색 결과를 리스트로 표시
-                for item in filtered_items:
-                    st.markdown(f"**{item['item_name']}**")
-                    st.markdown(f"Category: {item['category']}")
-                    col1, col2 = st.columns([3, 1])
-                    with col1:
-                        value = st.number_input(
-                            "Value",
-                            min_value=item["item_data"]["lower"],
-                            max_value=item["item_data"]["upper"],
-                            value=0,
-                            step=item["item_data"]["unit"],
-                            help=item["item_data"]["help"],
-                            key=f"search_{item['item_name']}",
-                        )
-                    with col2:
-                        st.text(f"Unit: {item['item_data']['unit']}")
-                    st.markdown("---")
-            else:
-                st.write("No items found.")
         else:
-            # 메인 카테고리 선택 콤보박스
+            # init data
+            Config.get_instance(data)
 
-            selected_main = st.radio("Select Main Category:", options=list(data.keys()))
+        category = []
+        main_cat = st.radio("Select Main Category:", options=list(data.keys()))
+        category.append(main_cat)
 
-            # 선택된 메인 카테고리의 내용 표시
-            if selected_main:
-                selected_data = data[selected_main]
+        # 선택된 메인 카테고리의 내용 표시
+        if main_cat:
+            selected_data = data[main_cat]
 
-                for category, items in selected_data.items():
-                    with st.expander(f"{category}", True):
-                        # 아이템 표시
-                        for item_name, item_data in items.items():
-                            render_item_row(item_name, item_data, category)
+            for sub_cat, items in selected_data.items():
+                category.append(sub_cat)
+                with st.expander(f"{sub_cat}", True):
+                    # 아이템 표시
+                    for item_name, item_data in items.items():
+                        render_item_row(item_name, item_data, category)
+                category.pop()
 
         # 설정 다운로드 버튼
         if st.button("Download Current Config"):
