@@ -10,13 +10,17 @@
             },
             "item1_2": {
                 "expr": "a##categorya_1##item1_1 * a##categorya_2##item2_1 / 4",
+                "help": "help string"
+            },
+            "item1_3": {
+                "expr": "max(a##categorya_1##item1_1,  a##categorya_1##item1_2)",
                 "upper": 10,
                 "lower": -10,
                 "unit": 1,
                 "help": "help string"
             },
-            "item1_3": {
-                "expr": "(a##categorya_1##item1_1 + a##categorya_1##item1_2) * 20",
+            "item1_4": {
+                "expr": "min(a##categorya_1##item1_1,  a##categorya_1##item1_2)",
                 "upper": 10,
                 "lower": -10,
                 "unit": 1,
